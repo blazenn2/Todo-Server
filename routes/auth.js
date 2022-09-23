@@ -5,7 +5,6 @@ const userSchema = require('../model/User');
 const router = express.Router();
 
 const authController = require('../controller/auth');
-const { Router } = require('express');
 
 router.post('/signup',
     body('email').trim().notEmpty().isEmail().normalizeEmail().withMessage("Invalid email").custom(value => userSchema.findOne({ email: value }).then(user => (user ? Promise.reject("Email already exist") : null))),
