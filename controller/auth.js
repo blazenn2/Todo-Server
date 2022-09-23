@@ -43,3 +43,36 @@ exports.login = async (req, res, next) => {
         next(err);
     }
 };
+
+
+exports.updateUser = async (req, res, next) => {
+    try {
+        if (req.body.newPassword === req.body.rePassword) {
+            const user = await userSchema.findOne({ _id: req.userId });
+            if (user) {
+                const checkPassword = await bcrypt.compare(req.body.oldPassword, user.password);
+                if (checkPassword) {
+                    const hashedPassword = await bcrypt.hash(req.body.newPassword, 12);
+                    user.email = req.body.email;
+                    user.password = hashedPassword;
+                    await user.save();
+                    return res.status(200).json({ message: "Updated user successfully" });
+                } else {
+                    const error = new Error("Wrong password entered!");
+                    error.statusCode = 401;
+                    throw error;
+                }
+            } else {
+                const error = new Error("User doesn't exist in database");
+                error.statusCode = 401;
+                throw error;
+            }
+        } else {
+            const error = new Error("Passwords doesn't match");
+            error.statusCode = 401;
+            throw error;
+        }
+    } catch (err) {
+        next(err);
+    }
+};

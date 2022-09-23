@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 const authRoutes = require('./routes/auth');
+const todoRoutes = require('./routes/todo');
 
 app.use(bodyParser.json()); // application/json
 
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/auth', authRoutes);
+app.use('/todo', todoRoutes);
 
 app.use((err, req, res, next) => {
     console.log(err);
