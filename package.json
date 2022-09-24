@@ -2,12 +2,13 @@
   "name": "nodejs-complete-guide",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "engines": {
     "node": "14.x"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "nodemon": "nodemon app.js"
   },
   "repository": {
     "type": "git",
