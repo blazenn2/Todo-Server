@@ -11,6 +11,10 @@ const todoSchema = new Schema({
         type: Number,
         required: true
     },
+    isCompleted: {
+        type: Boolean,
+        required: true
+    },
     userId: {
         type: Schema.Types.ObjectId,
         required: true

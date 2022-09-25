@@ -15,7 +15,7 @@ exports.addTodo = async (req, res, next) => {
             error.statusCode = 422;
             throw error;
         }
-        const todo = await todoSchema({ todo: req.body.todo, index: req.body.index, userId: req.userId }).save();
+        const todo = await todoSchema({ todo: req.body.todo, index: req.body.index, isCompleted: req.body.isCompleted, userId: req.userId }).save();
         if (todo) res.status(200).json({ message: "Todo Successfully added" });
         else {
             const error = new Error("Failed to save Todo");
@@ -34,7 +34,7 @@ exports.changeIndex = async (req, res, next) => {
         if (deleteTodos) {
             todoArray.forEach(async (val, i) => {
                 try {
-                    const addTodo = await todoSchema({ todo: val, index: i, userId: req.userId }).save();
+                    const addTodo = await todoSchema({ todo: val.todo, index: i, isCompleted: val.isCompleted, userId: req.userId }).save();
                     if (!addTodo) {
                         const error = new Error("Failed to update");
                         error.statusCode = 401;
@@ -54,4 +54,32 @@ exports.changeIndex = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+};
+
+exports.updateTodo = async (req, res, next) => {
+    try {
+        const updateTodo = await todoSchema.updateOne({ _id: req.body.id }, { isCompleted: req.body.isCompleted });
+        if (updateTodo) res.status(200).json({ message: "Updated todos successfully" });
+        else {
+            const error = new Error('Failed to update todos');
+            error.statusCode = 401;
+            throw error;
+        }
+    } catch (err) {
+        next(err);
+    };
+};
+
+exports.clearCompleted = async (req, res, next) => {
+    try {
+        const deleteCompleted = await todoSchema.deleteMany({ userId: req.userId, isCompleted: true });
+        if (deleteCompleted) res.status(200).json({ message: "Deleted completed todos successfully" });
+        else {
+            const error = new Error('Failed to delete completed todos');
+            error.statusCode = 401;
+            throw error;
+        }
+    } catch (err) {
+        next(err);
+    };
 };

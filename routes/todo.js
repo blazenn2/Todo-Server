@@ -10,8 +10,12 @@ const jwtVerification = require('../middlewares/is-auth');
 
 router.post('/add-todo', body('todo').trim().notEmpty().withMessage("Empty todo"), jwtVerification, todoController.addTodo);
 
-router.post('/change-index', jwtVerification, todoController.changeIndex);
+router.put('/change-index', jwtVerification, todoController.changeIndex);
 
-router.get('/get-todos', jwtVerification, todoController.getTodos)
+router.get('/get-todos', jwtVerification, todoController.getTodos);
+
+router.put('/update-todo', jwtVerification, todoController.updateTodo);
+
+router.get('/clear-completed', jwtVerification, todoController.clearCompleted);
 
 module.exports = router;
