@@ -28,7 +28,7 @@ exports.login = async (req, res, next) => {
             if (comparePassword) {
                 const token = jwt.sign({ userId: user._id.toString() }, 'thisistopsecretkey', { expiresIn: '1d' });
                 if (token) {
-                    return res.status(200).json({ message: "Login successfully", token: token });
+                    return res.status(200).json({ message: "Login successfully", token: token, name: user.name });
                 }
             } else {
                 const error = new Error("Invalid password");
