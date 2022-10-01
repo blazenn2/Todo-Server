@@ -26,7 +26,7 @@ exports.login = async (req, res, next) => {
         if (user) {
             const comparePassword = await bcrypt.compare(req.body.password, user.password);
             if (comparePassword) {
-                const token = jwt.sign({ userId: user._id.toString() }, 'thisistopsecretkey', { expiresIn: '1d' });
+                const token = jwt.sign({ userId: user._id.toString(), userName: user.name }, 'thisistopsecretkey', { expiresIn: '1d' });
                 if (token) {
                     return res.status(200).json({ message: "Login successfully", token: token, userId: user._id.toString(), name: user.name });
                 }
@@ -46,7 +46,7 @@ exports.login = async (req, res, next) => {
 
 exports.authentication = async (req, res, next) => {
     try {
-        if (req.userId) return res.status(200).json({ isAuth: true });
+        if (req.userId && req.name) return res.status(200).json({ isAuth: true, userId: req.userId, name: req.name });
         else {
             const error = new Error("Unauthorized user");
             error.statusCode = 401;
