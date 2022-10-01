@@ -2,7 +2,7 @@ const todoSchema = require('../model/Todo');
 const { validationResult } = require('express-validator');
 
 exports.getTodos = async (req, res, next) => {
-    const allTodos = await todoSchema.find({ userId: req.body.userId });
+    const allTodos = await todoSchema.find({ userId: req.userId });
     if (allTodos) return res.status(200).json({ allTodos });
 };
 
