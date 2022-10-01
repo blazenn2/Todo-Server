@@ -28,7 +28,7 @@ exports.login = async (req, res, next) => {
             if (comparePassword) {
                 const token = jwt.sign({ userId: user._id.toString() }, 'thisistopsecretkey', { expiresIn: '1d' });
                 if (token) {
-                    return res.status(200).json({ message: "Login successfully", token: token, name: user.name });
+                    return res.status(200).json({ message: "Login successfully", token: token, userId: user._id.toString(), name: user.name });
                 }
             } else {
                 const error = new Error("Invalid password");
@@ -41,6 +41,19 @@ exports.login = async (req, res, next) => {
         }
     } catch (err) {
         next(err);
+    }
+};
+
+exports.authentication = async (req, res, next) => {
+    try {
+        if (req.userId) return res.status(200).json({ isAuth: true });
+        else {
+            const error = new Error("Unauthorized user");
+            error.statusCode = 401;
+            throw error;
+        }
+    } catch (err) {
+        next(err)
     }
 };
 

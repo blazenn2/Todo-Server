@@ -12,10 +12,10 @@ router.post('/add-todo', body('todo').trim().notEmpty().withMessage("Empty todo"
 
 router.put('/change-index', jwtVerification, todoController.changeIndex);
 
-router.get('/get-todos', jwtVerification, todoController.getTodos);
+router.post('/get-todos', jwtVerification, todoController.getTodos);
 
 router.put('/update-todo', jwtVerification, todoController.updateTodo);
 
-router.get('/clear-completed', jwtVerification, todoController.clearCompleted);
+router.delete('/clear-completed', jwtVerification, todoController.clearCompleted);
 
 module.exports = router;

@@ -16,4 +16,6 @@ router.post('/login', authController.login);
 
 router.put('/update-user', jwtVerification, body('email').trim().notEmpty().isEmail().withMessage("Invalid email"), authController.updateUser);
 
+router.post('/verify', jwtVerification, authController.authentication);
+
 module.exports = router;
