@@ -16,7 +16,7 @@ exports.addTodo = async (req, res, next) => {
             throw error;
         }
         const todo = await todoSchema({ todo: req.body.todo, index: req.body.index, isCompleted: req.body.isCompleted, userId: req.userId }).save();
-        if (todo) res.status(200).json({ message: "Todo Successfully added" });
+        if (todo) res.status(200).json({ message: "Todo Successfully added", result: todo });
         else {
             const error = new Error("Failed to save Todo");
             error.statusCode = 401;
