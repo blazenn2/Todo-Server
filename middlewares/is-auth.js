@@ -25,5 +25,6 @@ module.exports = (req, res, next) => {
     }
     req.userId = decodedToken.userId;
     req.name = decodedToken.userName;
+    req.lightMode = decodedToken.isLightMode;
     next();
 };

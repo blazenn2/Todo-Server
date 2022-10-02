@@ -28,7 +28,7 @@ exports.login = async (req, res, next) => {
             if (comparePassword) {
                 const token = jwt.sign({ userId: user._id.toString(), userName: user.name }, 'thisistopsecretkey', { expiresIn: '1d' });
                 if (token) {
-                    return res.status(200).json({ message: "Login successfully", token: token, userId: user._id.toString(), name: user.name });
+                    return res.status(200).json({ message: "Login successfully", token: token, userId: user._id.toString(), name: user.name, isLightMode: user.isLightMode });
                 }
             } else {
                 const error = new Error("Invalid password");
@@ -46,7 +46,7 @@ exports.login = async (req, res, next) => {
 
 exports.authentication = async (req, res, next) => {
     try {
-        if (req.userId && req.name) return res.status(200).json({ isAuth: true, userId: req.userId, name: req.name });
+        if (req.userId && req.name) return res.status(200).json({ isAuth: true, userId: req.userId, name: req.name, lightMode: req.lightMode });
         else {
             const error = new Error("Unauthorized user");
             error.statusCode = 401;
@@ -99,7 +99,7 @@ exports.websiteSettng = async (req, res, next) => {
             user.save();
             return res.status(200).json({ message: "Request fulfilled", isLightMode: user.isLightMode });
         } else {
-            const error= new Error("Invalid User");
+            const error = new Error("Invalid User");
             error.statusCode = 401;
             throw error;
         }
