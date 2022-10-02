@@ -89,3 +89,22 @@ exports.updateUser = async (req, res, next) => {
         next(err);
     }
 };
+
+
+exports.websiteSettng = async (req, res, next) => {
+    try {
+        const user = await userSchema.findOne({ _id: req.userId });
+        if (user) {
+            user.isLightMode = !user.isLightMode;
+            user.save();
+            return res.status(200).json({ message: "Request fulfilled", isLightMode: user.isLightMode });
+        } else {
+            const error= new Error("Invalid User");
+            error.statusCode = 401;
+            throw error;
+        }
+
+    } catch (err) {
+        next(err);
+    }
+};

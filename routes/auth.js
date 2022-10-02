@@ -18,4 +18,6 @@ router.put('/update-user', jwtVerification, body('email').trim().notEmpty().isEm
 
 router.post('/verify', jwtVerification, authController.authentication);
 
+router.get('/website', jwtVerification, authController.websiteSettng);
+
 module.exports = router;

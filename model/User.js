@@ -14,6 +14,10 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    isLightMode: {
+        type: Boolean,
+        default: true
     }
 });
 
