@@ -32,19 +32,15 @@ exports.changeIndex = async (req, res, next) => {
         const todoArray = req.body.todo;
         const deleteTodos = await todoSchema.deleteMany({ userId: req.userId });
         if (deleteTodos) {
-            todoArray.forEach(async (val, i) => {
-                try {
-                    const addTodo = await todoSchema({ todo: val.todo, index: i, isCompleted: val.isCompleted, userId: req.userId }).save();
-                    if (!addTodo) {
-                        const error = new Error("Failed to update");
-                        error.statusCode = 401;
-                        throw error;
-                    }
-                } catch (err) {
-                    next(err);
-                };
-
-            });
+            for (let i = 0; i < todoArray.length; i++) {
+                const addTodo = await todoSchema({ todo: todoArray[i].todo, index: i, isCompleted: todoArray[i].isCompleted, userId: req.userId }).save();
+                if (!addTodo) {
+                    const error = new Error("Failed to update");
+                    error.statusCode = 401;
+                    throw error;
+                    break;
+                }
+            }
         } else {
             const error = new Error('Failed to update todos');
             error.statusCode = 401;
