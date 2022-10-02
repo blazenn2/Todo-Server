@@ -26,9 +26,9 @@ exports.login = async (req, res, next) => {
         if (user) {
             const comparePassword = await bcrypt.compare(req.body.password, user.password);
             if (comparePassword) {
-                const token = jwt.sign({ userId: user._id.toString(), userName: user.name }, 'thisistopsecretkey', { expiresIn: '1d' });
+                const token = jwt.sign({ userId: user._id.toString(), userName: user.name, isLightMode: user.isLightMode }, 'thisistopsecretkey', { expiresIn: '1d' });
                 if (token) {
-                    return res.status(200).json({ message: "Login successfully", token: token, userId: user._id.toString(), name: user.name, isLightMode: user.isLightMode });
+                    return res.status(200).json({ message: "Login successfully", token: token, userId: user._id.toString(), name: user.name, lightMode: user.lightMode });
                 }
             } else {
                 const error = new Error("Invalid password");
@@ -46,6 +46,7 @@ exports.login = async (req, res, next) => {
 
 exports.authentication = async (req, res, next) => {
     try {
+        console.log(req.lightMode);
         if (req.userId && req.name) return res.status(200).json({ isAuth: true, userId: req.userId, name: req.name, lightMode: req.lightMode });
         else {
             const error = new Error("Unauthorized user");
